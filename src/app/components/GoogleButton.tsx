@@ -11,7 +11,7 @@ export default function GoogleSignInButton() {
       await signIn?.authenticateWithRedirect({
         strategy: 'oauth_google',
         redirectUrl: '/',
-        redirectUrlComplete: '/',
+        redirectUrlComplete: '/dashboard',
       })
     } catch (err) {
       console.error('Google sign-in error:', err)
@@ -21,7 +21,7 @@ export default function GoogleSignInButton() {
   return (
     <button
       onClick={handleGoogleSignIn}
-      className=" block mx-auto bg-transparent text-white-500  h-10 w-80 my-7 border border-gray-500 rounded-sm "
+      className=" block mx-auto bg-white text-white-500 text-black  h-10 w-82 my-7 border border-gray-500 rounded-sm "
     >
       Sign in with Google
     </button>
