@@ -1,7 +1,7 @@
 'use client'
 
 import { useSignIn } from '@clerk/nextjs'
-import { useEffect } from 'react'
+
 import Image from 'next/image'
 import googleLogo from '../assets/google-g-logo-85b2.png'
 
