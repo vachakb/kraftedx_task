@@ -91,7 +91,7 @@ export default function Page() {
       // and capture the OTP code
       setVerifying(true)
     } catch (err: ClerkAPIError|any) {
-    {
+    
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
       if (isClerkAPIResponseError(err)) setErrors(err.errors)
