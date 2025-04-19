@@ -5,12 +5,16 @@ import { useSignIn } from '@clerk/nextjs'
 import { useRouter } from 'next/navigation'
 import { CustomGoogleOneTap } from './components/CustomGoogleOneTap'
 import GoogleSignInButton from './components/GoogleButton'
+import Link from 'next/link'
+import { ClerkAPIError } from '@clerk/types'
+import { isClerkAPIResponseError } from '@clerk/nextjs/errors'
 
 
 export default function SignInForm() {
   const { isLoaded, signIn, setActive } = useSignIn()
   const [email, setEmail] = React.useState('')
   const [password, setPassword] = React.useState('')
+  const [errors, setErrors] = React.useState<ClerkAPIError[]>()
   const router = useRouter()
 
 
@@ -71,6 +75,7 @@ export default function SignInForm() {
   // Handle the submission of the sign-in form
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    setErrors(undefined)
 
     if (!isLoaded) return
 
@@ -94,7 +99,8 @@ export default function SignInForm() {
     } catch (err: any) {
       // See https://clerk.com/docs/custom-flows/error-handling
       // for more info on error handling
-      console.error(JSON.stringify(err, null, 2))
+      if (isClerkAPIResponseError(err)) setErrors(err.errors)
+        console.error(JSON.stringify(err, null, 2))
     }
   }
  
@@ -146,7 +152,16 @@ export default function SignInForm() {
           <GoogleSignInButton />
         </div>
       </form>
+      <Link href="/signup" className='text-sm text-white-300 font-medium mx-auto'>Don't have an account? <u>Sign up</u></Link>
+     
     </div>
+    {errors && (
+        <ul className='flex flex-row items-center justify-center mt-2 font-bold text-red-700'>
+          {errors.map((el, index) => (
+            <li key={index}>{el.longMessage}</li>
+          ))}
+        </ul>
+      )}
     </>
   )
 }
